@@ -1,5 +1,5 @@
 const TYPES = {
     IInitializeElectronAppBehavior: Symbol.for("IInitializeElectronAppBehavior"),
-    IBrowserWindowEnvironmentFactory: Symbol.for("IBrowserWindowEnvironmentFactory"),
+    IBrowserWindowFactory: Symbol.for("IBrowserWindowFactory"),
 }
 export { TYPES };

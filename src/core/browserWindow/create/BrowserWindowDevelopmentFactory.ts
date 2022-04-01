@@ -1,11 +1,11 @@
 import { BrowserWindow } from "electron";
 import { injectable } from "inversify";
-import { IBrowserWindowEnvironmentFactory } from "./IBrowserWindowEnvironmentFactory";
+import { IBrowserWindowFactory } from "./IBrowserWindowFactory";
 import { dirname } from "path";
 const appDir = dirname(require.main?.filename as string);
 
 @injectable()
-export class BrowserWindowDevelopmentFactory implements IBrowserWindowEnvironmentFactory{
+export class BrowserWindowDevelopmentFactory implements IBrowserWindowFactory{
     create(): BrowserWindow{
         let result = new BrowserWindow({
             width:900, height: 600,

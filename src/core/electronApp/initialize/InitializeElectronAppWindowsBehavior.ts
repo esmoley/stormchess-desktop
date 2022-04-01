@@ -1,13 +1,18 @@
 import { BrowserWindow, dialog } from "electron";
-import { injectable } from "inversify";
-import { BrowserWindowFactory } from "../../browserWindow/BrowserWindowFactory";
+import { inject, injectable } from "inversify";
 import { IInitializeElectronAppBehavior } from "./IInitializeElectronAppBehavior";
 import { dirname } from "path";
 import { Protocol } from "../../protocol/protocol";
+import { IBrowserWindowFactory } from "../../browserWindow/create/IBrowserWindowFactory";
+import { TYPES } from "../../inversify.types";
 const appDir = dirname(require.main?.filename as string);
 
 @injectable()
 export class InitializeElectronAppWindowsBehavior implements IInitializeElectronAppBehavior{
+    constructor(
+        @inject(TYPES.IBrowserWindowFactory) private _browserWindowFactory: IBrowserWindowFactory
+        ){}
+
     onMainWindowCreated = (mainWindow: BrowserWindow) => {};
     onMainWindowCreatedRegisterEvent(callback: (mainWindow: BrowserWindow) => any): void {
         this.onMainWindowCreated = callback;
@@ -34,10 +39,17 @@ export class InitializeElectronAppWindowsBehavior implements IInitializeElectron
                 
             })
             app.whenReady().then(()=>{
-                mainWindow = new BrowserWindowFactory().create();
+                mainWindow = this._browserWindowFactory.create();
                 this.onMainWindowCreated(mainWindow);
+                mainWindow.webContents.on('new-window', (event, url) => {
+                    console.log("prevented url: "+url)
+                    event.preventDefault();
+                    mainWindow?.loadURL(url);
+                });
+                
+                mainWindow.maximize();
                 mainWindow.show();
-                    // Keep only command line / deep linked arguments
+                // Keep only command line / deep linked arguments
                 try{
                     let url = this.argsToUrl(process.argv);
                     this.loadUrl(url, mainWindow);
@@ -45,9 +57,7 @@ export class InitializeElectronAppWindowsBehavior implements IInitializeElectron
                     console.error(ex);
                     console.log("loading default url");
                     mainWindow.loadURL("https://storm-chess.com")
-                }
-                ;
-                //mainWindow.loadFile(appDir + "\\assets\\index.html");
+                };
             });
             app.on('open-url', (event, url) => {
                 this.loadUrl(url, mainWindow);

@@ -1,13 +1,13 @@
 import { BrowserWindow } from "electron";
 import { injectable } from "inversify";
 import { dirname } from "path";
-import { IBrowserWindowEnvironmentFactory } from "./IBrowserWindowEnvironmentFactory";
+import { IBrowserWindowFactory } from "./IBrowserWindowFactory";
 const appDir = dirname(require.main?.filename as string);
 
 @injectable()
-export class BrowserWindowProductionFactory implements IBrowserWindowEnvironmentFactory{
+export class BrowserWindowProductionFactory implements IBrowserWindowFactory{
     create(): BrowserWindow{
-        return new BrowserWindow({
+        let result = new BrowserWindow({
             //width:900, height: 600
             webPreferences:{
                 preload: appDir + "\\renderer\\preload.js",
@@ -18,5 +18,6 @@ export class BrowserWindowProductionFactory implements IBrowserWindowEnvironment
             title: "Storm chess loading...",
             autoHideMenuBar: true,
         })
+        return result;
     }
 }

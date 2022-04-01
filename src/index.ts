@@ -1,17 +1,18 @@
 import "reflect-metadata";
 import {app, ipcMain, BrowserWindow, dialog, shell} from "electron";
-import { BrowserWindowFactory } from "./core/browserWindow/BrowserWindowFactory";
 import { TYPES } from "./core/inversify.types";
 import { container } from "./inversify.config";
 import { IInitializeElectronAppBehavior } from "./core/electronApp/initialize/IInitializeElectronAppBehavior";
 import { Protocol } from "./core/protocol/protocol";
+import { IBrowserWindowFactory } from "./core/browserWindow/create/IBrowserWindowFactory";
 const path = require('path');
 
 let initializeElectronAppBehavior : IInitializeElectronAppBehavior = container.get<IInitializeElectronAppBehavior>(TYPES.IInitializeElectronAppBehavior);
+
 let mainWindow:BrowserWindow;
 initializeElectronAppBehavior.onMainWindowCreatedRegisterEvent((window:BrowserWindow)=>{
-    mainWindow = window;
-    console.log("window created");
+  mainWindow = window;
+  console.log("window created");
 })
 initializeElectronAppBehavior.execute(app);
 

@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
 
-export interface IBrowserWindowEnvironmentFactory{
+export interface IBrowserWindowFactory{
     create:()=>BrowserWindow;
 }
