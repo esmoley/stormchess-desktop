@@ -1,0 +1,45 @@
+{
+  "name": "stormchess",
+  "productName": "StormChess",
+  "version": "1.0.1",
+  "description": "",
+  "main": "./out/index.js",
+  "scripts": {
+    "replace-assets": "cp -r ./src/assets ./out/assets",
+    "build": "rm -rf ./out && tsc && npm run replace-assets && node build-script.js",
+    "dist:win": "npm run build && electron-builder build -w",
+    "dist:win:dev": "set DEV=true && npm run build && electron-builder build -w",
+    "start": "set DEV=true && npm run build && electron .",
+    "start:prod": "npm run build && electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "build": {
+    "win": {
+      "target": [
+        "nsis",
+        "appx",
+        "dir"
+      ],
+      "icon": "icon.ico"
+    },
+    "protocols": {
+      "name": "stormchess-protocol",
+      "schemes": [
+        "stormchess"
+      ]
+    }
+  },
+  "keywords": [],
+  "author": "Clickstorm",
+  "license": "ISC",
+  "dependencies": {
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "electron": "^17.2.0",
+    "electron-builder": "^22.14.13"
+  }
+}
