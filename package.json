@@ -11,7 +11,7 @@
     "dist:win:dev": "set DEV=true && npm run build && electron-builder build -w",
     "start": "set DEV=true && npm run build && electron .",
     "start:prod": "npm run build && electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc ./node_modules/.bin/_mocha 'tests/**/*.test.ts'"
   },
   "build": {
     "win": {
@@ -38,8 +38,14 @@
     "typescript": "^4.6.3"
   },
   "devDependencies": {
+    "@testdeck/mocha": "^0.2.0",
+    "@types/chai": "^4.3.0",
     "@types/electron": "^1.6.10",
+    "chai": "^4.3.6",
     "electron": "^17.2.0",
-    "electron-builder": "^22.14.13"
+    "electron-builder": "^22.14.13",
+    "mocha": "^9.2.2",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.7.0"
   }
 }
